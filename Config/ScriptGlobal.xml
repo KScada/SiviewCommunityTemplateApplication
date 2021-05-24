@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Scripting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <NomClasse>Script</NomClasse>
+  <CodeImports>Imports System
+Imports System.Collections.Generic</CodeImports>
+  <CodeSource>    
+Sub SimulationProcess(p as List(Of String))
+
+    GestionPoidsCuveKScada
+    GestionPoidsCuveSiview
+    
+    If SYS.ReadVar("MarcheG7")=0 then
+       'Fermeture des vannes
+        for i=1 to 13
+            PiloteVanne(i,0)          
+       next
+       
+       SYS.WriteVar("Etat_Kscada",0)
+       SYS.WriteVar("Etat_SIVIEW",0)
+ 
+       exit sub
+    end if
+    
+    'Remplissage Cuve KScada    
+    If SYS.ReadVar("KScada_NH")=0 then
+        AlterneVanne(1)
+        AlterneVanne(2)
+        AlterneVanne(3)
+        PiloteVanne(4,0)
+       SYS.WriteVar("Etat_Kscada",1)
+        
+    else
+        PiloteVanne(1,0)
+        PiloteVanne(2,0)
+        PiloteVanne(3,0)
+        PiloteVanne(4,1)              
+        SYS.WriteVar("Etat_Kscada",2)
+    End if
+
+    'Remplissage Cuve Siview
+    If SYS.ReadVar("SIVIEW_NH")=0 then
+        if SYS.ReadVar("EV04_Ouv")=1 then
+            AlterneVanne(5)
+            AlterneVanne(6)
+            AlterneVanne(7)
+            AlterneVanne(8)
+            AlterneVanne(9)
+            AlterneVanne(10)
+            AlterneVanne(11)
+            AlterneVanne(12)
+            PiloteVanne(13,0)              
+            SYS.WriteVar("Etat_SIVIEW",1)
+        end if
+    else
+        PiloteVanne(5,0)
+        PiloteVanne(6,0)
+        PiloteVanne(7,0)
+        PiloteVanne(8,0)
+        PiloteVanne(9,0)
+        PiloteVanne(10,0)
+        PiloteVanne(11,0)
+        PiloteVanne(12,0)
+        PiloteVanne(13,1)              
+        SYS.WriteVar("Etat_SIVIEW",2)
+    End if
+    
+End Sub
+
+sub PiloteVanne(numVanne as integer,valeur as integer)
+
+    dim NomVanne = "EV" &amp; numVanne.ToString("00")
+    
+    If SYS.ReadVar(nomVanne &amp; "_Manu")=0 and SYS.ReadVar(nomVanne &amp; "_Def")=0 then
+        SYS.WriteVar(nomVanne &amp; "_Ouv",valeur)
+    end if
+    
+end sub
+
+sub AlterneVanne(numVanne as integer)
+
+    Dim bitTempo = (Date.now.second and 2)&lt;&gt;0
+    Dim pilotage1 = if(bitTempo,0,1)
+    Dim pilotage2 = if(bitTempo,1,0)
+
+    If (numVanne mod 2)=0 then
+        PiloteVanne(numVanne,pilotage1)
+    Else
+        PiloteVanne(numVanne,pilotage2)
+    End if
+
+end sub
+
+sub GestionPoidsCuveKScada
+    
+   Dim nomCuve = "KScada"
+   
+	Dim consNH = SYS.ReadVar("Rec_ConsNHCuveKScada")
+	Dim consNB = SYS.ReadVar("Rec_ConsNBCuveKScada")
+ 
+   'Gestion du Poids Cuve KScada
+   Dim delta = SYS.ReadVar("EV01_Ouv") + SYS.ReadVar("EV02_Ouv") + SYS.ReadVar("EV03_Ouv") - SYS.ReadVar("EV04_Ouv")*2
+   
+   Dim pds = SYS.ReadVar(nomCuve &amp; "_Poids") + delta
+    if pds&lt;0 then pds=0
+    SYS.WriteVar(nomCuve &amp; "_Poids",pds)
+    
+    If pds &gt;= consNH Then 'Hysteris niveau pour animation
+        SYS.WriteVar(nomCuve &amp; "_NH",1)
+    ElseIf pds &lt; consNB Then
+        SYS.WriteVar(nomCuve &amp; "_NH",0)
+    end if
+
+end sub
+
+sub GestionPoidsCuveSiview
+       
+    'Gestion du Poids Cuve KScada
+    dim delta as single = - SYS.ReadVar("EV13_Ouv")*2
+
+    for numVanne=5 to 12
+       dim NomVanne = "EV" &amp; numVanne.ToString("00")
+       delta += SYS.ReadVar(nomVanne &amp; "_ouv")/8
+    next 
+
+    if SYS.ReadVar("EV04_Ouv")=1 and SYS.ReadVar("EV05_Ouv")=1 then delta+=0.4
+
+    Dim nomCuve = "SIVIEW"
+	Dim consNH = SYS.ReadVar("Rec_ConsNHCuveSiview")
+	Dim consNB = SYS.ReadVar("Rec_ConsNBCuveSiview")
+	
+    Dim pds = SYS.ReadVar(nomCuve &amp; "_Poids") + delta
+    if pds&lt;0 then pds=0
+    SYS.WriteVar(nomCuve &amp; "_Poids",pds)
+
+    If pds &gt;= consNH  Then 'Hysteris niveau pour animation
+        SYS.WriteVar(nomCuve &amp; "_NH",1)
+    ElseIf pds &lt; consNB Then
+        SYS.WriteVar(nomCuve &amp; "_NH",0)
+    end if
+
+end sub
+
+</CodeSource>
+  <Références />
+</Scripting>

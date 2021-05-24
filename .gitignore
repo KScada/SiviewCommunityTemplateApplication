@@ -1,0 +1,7 @@
+*.exe
+*.dll
+*.sos
+Logs
+Logs/*
+Synoptics/*.bak
+Config/*.old

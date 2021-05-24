@@ -1,0 +1,4 @@
+Condition	TextColor	BackColor	Blink	Text	StrokeColor	StrokeThickness	StrokeStyle
+= 0	Black	WhiteSmoke	False	RAZ	WhiteSmoke	1	Solid
+= 10	Black	#FFE0C0	False	VALEUR DIX	WhiteSmoke	1	Solid
+= 30	Black	#FFFFC0	False	VALEUR TRENTE	WhiteSmoke	1	Solid
