@@ -7,7 +7,7 @@ Application modèle pour [Siview from KScada](https://www.kscada.com/siview.html
 
 Ce dépot contient une application d'exemple pour le logiciel scada Siview.
 
-Dans cet example vous allez apprendre à :
+Dans cet exemple vous allez apprendre à :
 
 * Naviger entre les pages
 * Configurer & afficher les alarmes et les données historiques
