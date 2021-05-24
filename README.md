@@ -41,6 +41,6 @@ To edit the application, go to the Misc (divers) page and click the "configurati
 ## Important notice
 
 At this time, KScada is targeting the french local market.
-With Siview you can build a multi language application but (for now) most of the configuration interface are in french.
+With Siview you can build a multi languages application but (for now) most of the configuration interfaces are in french.
 
 
