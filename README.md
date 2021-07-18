@@ -3,6 +3,9 @@ Template application for [Siview from KScada](https://www.kscada.com/siview.html
 
 >*Veuillez trouver la version française ici : [lisez-moi](README.FR.md)*
 
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/yXhehV_huXM/0.jpg)](http://www.youtube.com/watch?v=yXhehV_huXM "KScada Siview")
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/ZjaIsO-YcAM/0.jpg)](http://www.youtube.com/watch?v=ZjaIsO-YcAM&list=PLlZOrC7AQ_30R6nzzEmJdrn82t8hD4_wY "KScada Siview Tutorial")
+
 ## Description
 
 This repository contain a sample application for scada software Siview.
