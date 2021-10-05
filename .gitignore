@@ -4,4 +4,6 @@
 Logs
 Logs/*
 Synoptics/*.bak
+Synoptics/Symboles/*.bak
+Synoptics/Popups/*.bak
 Config/*.old
