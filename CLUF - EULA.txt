@@ -1,0 +1,28 @@
+Contrat de licence de l'utilisateur final
+-----------------------------------------
+
+L'édition community de Siview est fourni en l'état. 
+L'utilisateur utilise le logiciel à ses risques et périls, sans garantie d'aucune sorte de la part de KScada. 
+
+KScada n'est responsable d'aucun dommage subi par l'utilisateur pouvant résulter de l'utilisation ou de la distribution du logiciel Siview.
+
+De la même façon, KScada n'est en aucun cas responsable d'une quelconque perte de revenus ou de profit, ou de données, ou de tous dommages directs ou indirects, susceptibles de survenir du fait de l'utilisation du logiciel ou pour la raison que celui-ci serait inopérant, quand bien même l'auteur aurait été averti de la possibilité de tels dommages.
+
+L'utilisateur reconnaît que l'état actuel des connaissances scientifiques et techniques au moment de la mise en circulation du logiciel ne permet pas d'en tester et d'en vérifier toutes les utilisations ni de détecter l'existence d'éventuels défauts.
+L'attention de l'utilisateur est attirée sur les risques associés au chargement et à l'utilisation du logiciel qui est réservé à des utilisateurs avertis.
+Il relève de la responsabilité de l'utilisateur de contrôler, par tous moyens, l'adéquation du produit à ses besoins, son bon fonctionnement et de s'assurer qu'il ne causera pas de dommages aux personnes et aux biens. 
+
+L'édition community de Siview est gratuite pour une utilisation privée, commerciale ou éducative (incluant les organisations à but non lucratif). 
+
+L'utilisation du logiciel Siview vaut acceptation par l'utilisateur des termes de la licence ci-dessus.
+
+-----------------------------------------------------------------------------------------------------------------------
+User license agreement
+-----------------------------------
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+SIVIEW community edition is supplied free of charge for private, commercial or educative use (including use by non-profit-making organisations).
+
+The use of Siview implies the acceptance by the user of the terms of this license.
