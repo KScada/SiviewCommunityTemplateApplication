@@ -3,8 +3,10 @@
   <NomClasse>Script</NomClasse>
   <CodeImports>Imports System
 Imports System.Collections.Generic</CodeImports>
-  <CodeSource>    
-Sub SimulationProcess(p as List(Of String))
+  <CodeSource>Dim StartProcess As Date = Date.Now
+Dim EndProcess As Date
+
+Sub SimulationProcess(p As List(Of String))
 
     GestionPoidsCuveKScada
     GestionPoidsCuveSiview
@@ -19,8 +21,10 @@ Sub SimulationProcess(p as List(Of String))
        SYS.WriteVar("Etat_SIVIEW",0)
  
        exit sub
-    end if
-    
+    End If
+
+	EndProcess = Date.Now
+	
     'Remplissage Cuve KScada    
     If SYS.ReadVar("KScada_NH")=0 then
         AlterneVanne(1)
@@ -139,6 +143,28 @@ sub GestionPoidsCuveSiview
     end if
 
 end sub
+
+
+Sub Dcy(p As List(Of String))
+	StartProcess = Date.Now
+End Sub
+
+
+Sub ExportRapportPdf(p As List(Of String))
+	Dim rapport = New SIVProxy.PdfPage
+	rapport.Title="RAPPORT DE PRODUCTION"
+	rapport.Subtitle ="Généré par SIVIEW"
+	rapport.ShowTimestamp = True
+	rapport.SynopticName = "rapport"
+	
+	If EndProcess&lt;=StartProcess Then EndProcess = Date.Now
+	
+	rapport.Parameters.Add( New SIVProxy.Parameter With {.Name = "start", .Value = StartProcess.ToString("yyyy-MM-dd HH:mm:ss")})
+	rapport.Parameters.Add( New SIVProxy.Parameter With {.Name = "end", .Value = EndProcess.ToString("yyyy-MM-dd HH:mm:ss")})
+	
+	sys.ExportSynopticToPdf("Rapport.pdf", rapport)
+	System.Diagnostics.Process.Start("Rapport.pdf")
+End Sub
 
 </CodeSource>
   <Références />
