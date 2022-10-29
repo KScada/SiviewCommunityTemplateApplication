@@ -151,18 +151,32 @@ End Sub
 
 
 Sub ExportRapportPdf(p As List(Of String))
-	Dim rapport = New SIVProxy.PdfPage
-	rapport.Title="RAPPORT DE PRODUCTION"
-	rapport.Subtitle ="Généré par SIVIEW"
-	rapport.ShowTimestamp = True
-	rapport.SynopticName = "rapport"
+	
+	'Configuration rapport principal
+	Dim pages = New List(Of SIVProxy.PdfPage)
+	Dim page = New SIVProxy.PdfPage
+	page.Title="RAPPORT DE PRODUCTION"
+	page.Subtitle ="Généré par SIVIEW"
+	page.ShowTimestamp = True
+	page.SynopticName = "rapport"
+	pages.Add(page)
 	
 	If EndProcess&lt;=StartProcess Then EndProcess = Date.Now
 	
-	rapport.Parameters.Add( New SIVProxy.Parameter With {.Name = "start", .Value = StartProcess.ToString("yyyy-MM-dd HH:mm:ss")})
-	rapport.Parameters.Add( New SIVProxy.Parameter With {.Name = "end", .Value = EndProcess.ToString("yyyy-MM-dd HH:mm:ss")})
+	'Paramètres de substitution à passer au synoptique
+	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "start", .Value = StartProcess.ToString("yyyy-MM-dd HH:mm:ss")})
+	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "end", .Value = EndProcess.ToString("yyyy-MM-dd HH:mm:ss")})
 	
-	sys.ExportSynopticToPdf("Rapport.pdf", rapport)
+	'Configuration extraction des alarmes en annexe
+	Dim annexes = New List(Of SIVProxy.AlarmsReport)
+	Dim almReport = New SIVProxy.AlarmsReport
+	almReport.Start = StartProcess
+	almReport.End = EndProcess
+	almReport.Title = "Annexes"
+	almReport.Subtitle = "Liste des évènements durant la production"
+	annexes.Add(almReport)
+
+	sys.ExportSynopticToPdf("Rapport.pdf", pages, annexes)
 	System.Diagnostics.Process.Start("Rapport.pdf")
 End Sub
 
