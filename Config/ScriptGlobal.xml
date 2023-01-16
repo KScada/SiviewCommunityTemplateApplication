@@ -3,8 +3,9 @@
   <NomClasse>Script</NomClasse>
   <CodeImports>Imports System
 Imports System.Collections.Generic</CodeImports>
-  <CodeSource>Dim StartProcess As Date = Date.Now
-Dim EndProcess As Date
+  <CodeSource>Const dateFileFormat = "yyyyMMddTHHmmss"
+Dim StartProcess As Date = Date.Now
+Dim EndProcess As Date = Date.Now
 
 Sub SimulationProcess(p As List(Of String))
 
@@ -149,9 +150,13 @@ Sub Dcy(p As List(Of String))
 	StartProcess = Date.Now
 End Sub
 
+#Region "Gestion Rapports"
 
 Sub ExportRapportPdf(p As List(Of String))
 	
+	If StartProcess = EndProcess Then Exit Sub
+	
+	Const dateFormat = "yyyy-MM-dd HH:mm:ss"
 	'Configuration rapport principal
 	Dim pages = New List(Of SIVProxy.PdfPage)
 	Dim page = New SIVProxy.PdfPage
@@ -164,8 +169,8 @@ Sub ExportRapportPdf(p As List(Of String))
 	If EndProcess&lt;=StartProcess Then EndProcess = Date.Now
 	
 	'Paramètres de substitution à passer au synoptique
-	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "start", .Value = StartProcess.ToString("yyyy-MM-dd HH:mm:ss")})
-	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "end", .Value = EndProcess.ToString("yyyy-MM-dd HH:mm:ss")})
+	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "start", .Value = StartProcess.ToString(dateFormat)})
+	page.Parameters.Add( New SIVProxy.Parameter With {.Name = "end", .Value = EndProcess.ToString(dateFormat)})
 	
 	'Configuration extraction des alarmes en annexe
 	Dim annexes = New List(Of SIVProxy.AlarmsReport)
@@ -176,10 +181,51 @@ Sub ExportRapportPdf(p As List(Of String))
 	almReport.Subtitle = "Liste des évènements durant la production"
 	annexes.Add(almReport)
 
-	sys.ExportSynopticToPdf("Rapport.pdf", pages, annexes)
-	System.Diagnostics.Process.Start("Rapport.pdf")
+	Dim filename = "Rapport_" + StartProcess.ToString(dateFileFormat) + "_" + EndProcess.ToString(dateFileFormat) + ".pdf"
+	
+	sys.ExportSynopticToPdf(filename, pages, annexes)
+	StartProcess = EndProcess
 End Sub
 
-</CodeSource>
+Sub SelectionRapport(p As List(Of String))
+	Sys.ShowGridSelection("CONSULTATION DES RAPPORTS","Horodatage","", AddressOf RecupRapports, AddressOf AfficheRapport)
+End Sub
+
+Function RecupRapports(filtre As String) As IEnumerable(Of Object)
+	Dim rapports As New List(Of Rapport)
+	Dim fichiers = IO.Directory.GetFiles(IO.Directory.GetCurrentDirectory, "Rapport_*.pdf")
+	
+	Dim filtreDate As Date
+	Date.TryParse(filtre, filtreDate)
+	
+	For Each fichier In fichiers		
+		Dim infos = io.Path.GetFileNameWithoutExtension(fichier).Split("_")
+		If infos.Length = 3 Then
+			Dim rap = New Rapport
+			Date.TryParseExact(infos(1), dateFileFormat, Nothing, Nothing, rap.Début)
+			Date.TryParseExact(infos(2), dateFileFormat, Nothing, Nothing, rap.Fin)
+			
+			If filtredate = Date.MinValue OrElse rap.début &lt;= filtreDate Then 
+				rapports.Add(rap)
+			End If
+		End If
+	Next
+	rapports.Sort(Function (r1,r2) r2.Début.CompareTo(r1.Début))
+	Return rapports
+End Function
+
+Sub AfficheRapport(selection As Object)
+	Dim rap = CType(selection,rapport)
+	Dim fichier = "Rapport_" + rap.Début.ToString(dateFileFormat) + "_" + rap.Fin.ToString(dateFileFormat) + ".pdf"
+	System.Diagnostics.Process.Start(fichier)
+End Sub
+
+Class Rapport
+	Property Type As String = "Rapport de production"
+	Property Début As Date
+	Property Fin As Date
+End Class
+
+#End Region</CodeSource>
   <Références />
 </Scripting>
