@@ -8,3 +8,5 @@ Synoptics/Symboles/*.bak
 Synoptics/Popups/*.bak
 Config/*.old
 Config/DataPersistence/currentAlarms.almstate
+GraphicsLibrary/*
+GraphicsLibrary
